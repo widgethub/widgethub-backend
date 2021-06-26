@@ -1,7 +1,7 @@
 
 import express from 'express';
 import { body, validationResult, ValidationChain } from 'express-validator';
-import { getUserProviders } from '../services/db.service';
+import { getUserProviders, newUserProvider, deleteUserProvider, updateUserProvider } from '../services/db.service';
 import { checkAuth } from './middleware/auth.middleware';
 import { Provider } from '../types/provider.types';
 
@@ -13,8 +13,7 @@ profileRouter.get(
   async (req: any, res: express.Response) => {
 
     // maybe double check this is defined or sm first
-    const user_id = req.userData.user_id
-    const db_resp = await getUserProviders(user_id); 
+    const db_resp = await getUserProviders(req.userData.user_id); 
 
     let providersList: Provider[] = [];
     for (const row of db_resp) {
@@ -31,13 +30,41 @@ profileRouter.get(
 
 profileRouter.post(
   '/providers',
-  body('provider_id').notEmpty().isInt(),
   body('newProvider').notEmpty(),
   checkAuth,
-  (req: express.Request, res: express.Response) => {
-    try { validationResult(req).throw; }
-    catch(err) { res.status(400).json({ errors: err.array() }); }
+  async (req: any, res: express.Response) => {
+    const valErr = validationResult(req);
+    if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
 
     // need to check if provider is of right type
+    // console.log(req.body.newProvider);
+    await newUserProvider(req.userData.user_id, req.body.newProvider);
 
+    res.status(200).json({ message: 'success' });
+});
+
+profileRouter.patch(
+  '/providers',
+  body('updatedProvider').notEmpty(),
+  checkAuth,
+  async (req: any, res: express.Response) => {
+    const valErr = validationResult(req);
+    if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
+
+    await updateUserProvider(req.body.updatedProvider);
+
+    res.status(200).json({ message: 'success' });
+});
+
+profileRouter.delete(
+  '/providers',
+  body('provider_id').notEmpty().isInt(),
+  checkAuth,
+  async (req: any, res: express.Response) => {
+    const valErr = validationResult(req);
+    if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
+
+    await deleteUserProvider(req.body.provider_id);
+
+    res.status(200).json({ message: 'success' });
 });

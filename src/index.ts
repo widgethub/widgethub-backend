@@ -28,7 +28,7 @@ const main = async () => {
   app.use('/auth', authRouter);
   app.use('/profile', profileRouter);
 
-  app.listen(3000, () => {
+  app.listen(5001, () => {
     console.log('server started');
   });
 

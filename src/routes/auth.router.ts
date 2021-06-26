@@ -15,8 +15,8 @@ authRouter.post(
   '/register',
   authValidator(),
   async (req: express.Request, res: express.Response) => {
-    try { validationResult(req).throw; }
-    catch(err) { res.status(400).json({ errors: err.array() }); }
+    const valErr = validationResult(req);
+    if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
 
     const { username, password } = req.body;
     const token = await registerUser(username, password);
@@ -28,8 +28,8 @@ authRouter.post(
   '/login',
   authValidator(),
   async (req: express.Request, res: express.Response) => {
-    try { validationResult(req).throw; }
-    catch(err) { res.status(400).json({ errors: err.array() }); }
+    const valErr = validationResult(req);
+    if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
 
     const { username, password } = req.body;
     const token = await authenticateUser(username, password);

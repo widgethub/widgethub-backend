@@ -53,6 +53,16 @@ export const newUserProvider = async (user_id: number, newProvider: Provider) =>
   .then(res => res)
   .catch(err => err);
 
-// export const setUserProviders = async (username: string) => postgresClient.query(
-//   ''
-// )
+export const updateUserProvider = async (updatedProvider: Provider) => postgresClient.query(
+  'UPDATE Providers SET name = $1, info = $2, provider = $3 WHERE id = $4',
+  [updatedProvider.name, updatedProvider.info, updatedProvider.provider, updatedProvider.id]
+)
+  .then(res => res)
+  .catch(err => err);
+
+export const deleteUserProvider = async (provider_id: number) => postgresClient.query(
+  'DELETE FROM Providers WHERE id = $1',
+  [provider_id]
+)
+  .then(res => res)
+  .catch(err => err);
