@@ -1,25 +1,11 @@
 
 import * as jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../config';
-import { postgresClient } from './db.service';
 
-export const registerUser = async (username: string, password: string): Promise<string> => postgresClient.query(
-    'INSERT INTO Users(username, password) VALUES($1, $2) RETURNING username',
-    [username, password]
-  )
-  .then(res => generateToken(res.rows[0].username))
-  .catch(err => err);
 
-export const authenticateUser = async (username: string, password: string) => postgresClient.query(
-  'SELECT * FROM Users WHERE username = $1 AND password = $2',
-  [username, password]
-)
-  .then(res => generateToken(res.rows[0].username))
-  .catch(err => err);
-
-export const generateToken = (username: string): string => {
+export const generateToken = (user_id: string): string => {
   return jwt.sign(
-    { username: username },
+    { user_id: user_id },
     JWT_KEY,
     { expiresIn: "24h" }
   );

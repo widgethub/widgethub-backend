@@ -4,6 +4,10 @@ import express from 'express';
 import * as jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../../config';
 
+// export interface UserIdRequest extends express.Request {
+//   userData: any
+// }
+
 export const checkAuth = (req: any, res: express.Response, next: express.NextFunction) => {
 
   try {

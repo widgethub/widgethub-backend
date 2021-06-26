@@ -4,6 +4,7 @@ export enum ProviderEnum {
 }
 
 export type Provider = {
+  id: number,
   provider: ProviderEnum,
   name: string,
   info: string
