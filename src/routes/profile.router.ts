@@ -16,7 +16,7 @@ profileRouter.get(
     const user_id = req.userData.user_id
     const db_resp = await getUserProviders(user_id); 
 
-    let providersList = [];
+    let providersList: Provider[] = [];
     for (const row of db_resp) {
       providersList.push({
         id: row.id,
@@ -31,11 +31,13 @@ profileRouter.get(
 
 profileRouter.post(
   '/providers',
-  body('provider_id').notEmpty(),
+  body('provider_id').notEmpty().isInt(),
   body('newProvider').notEmpty(),
   checkAuth,
   (req: express.Request, res: express.Response) => {
     try { validationResult(req).throw; }
     catch(err) { res.status(400).json({ errors: err.array() }); }
+
+    // need to check if provider is of right type
 
 });

@@ -46,13 +46,12 @@ export const getUserProviders = async (user_id: number) => postgresClient.query(
   .then(res => res.rows)
   .catch(err => err);
 
-export const newUserProvider = async (username: string, newProvider: Provider) => {
-
-  return postgresClient.query(
-    'INSERT INTO Providers(name, info, provider, user_id) VALUES($1, $2, $3, $4) RETURNING *',
-    [newProvider.name, newProvider.info, newProvider.provider]
-  )
-}
+export const newUserProvider = async (user_id: number, newProvider: Provider) => postgresClient.query(
+  'INSERT INTO Providers(name, info, provider, user_id) VALUES($1, $2, $3, $4) RETURNING *',
+  [newProvider.name, newProvider.info, newProvider.provider, user_id]
+)
+  .then(res => res)
+  .catch(err => err);
 
 // export const setUserProviders = async (username: string) => postgresClient.query(
 //   ''
