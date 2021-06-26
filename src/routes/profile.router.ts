@@ -37,10 +37,10 @@ profileRouter.post(
     if (!valErr.isEmpty()) { return res.status(400).json({ errors: valErr.array() }); }
 
     // need to check if provider is of right type
-    // console.log(req.body.newProvider);
-    await newUserProvider(req.userData.user_id, req.body.newProvider);
+    const dbResponse = await newUserProvider(req.userData.user_id, req.body.newProvider);
+    const newProviderId = dbResponse.rows[0].id;
 
-    res.status(200).json({ message: 'success' });
+    res.status(200).json({ id: newProviderId });
 });
 
 profileRouter.patch(

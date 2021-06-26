@@ -23,8 +23,8 @@ const main = async () => {
   const app = express();
   apollo.applyMiddleware({ app });
 
-  app.use(cors);
   app.use(express.json());
+  app.use(cors());
 
   /* routes */
   app.use('/auth', authRouter);
