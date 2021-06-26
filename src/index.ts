@@ -7,6 +7,10 @@ import express, { response } from 'express';
 import { GithubResolver } from './resolvers/Github.resolver';
 import { githubRequest } from './services/github.service';
 
+import { authRouter } from './routes/auth.router';
+
+import { postgresConnect } from './services/db.service';
+
 const main = async () => {
 
   const schema = await buildSchema({
@@ -14,19 +18,17 @@ const main = async () => {
   });
 
   const apollo = new ApolloServer({ schema });
-
   const app = express();
-
   apollo.applyMiddleware({ app });
 
-  app.get('/', async (req, res) => {
-
-    res.send('Home page');
-  });
+  /* routes */
+  app.use('/auth', authRouter);
 
   app.listen(3000, () => {
     console.log('server started');
   });
+
+  postgresConnect();
 
 }
 
