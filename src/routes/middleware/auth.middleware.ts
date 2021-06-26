@@ -1,7 +1,10 @@
+
+import express from 'express';
+
 import * as jwt from 'jsonwebtoken';
 import { JWT_KEY } from '../../config';
 
-export const checkAuth = (req, res, next) => {
+export const checkAuth = (req: any, res: express.Response, next: express.NextFunction) => {
 
   try {
     const token = req.header("x-access-token");

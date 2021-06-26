@@ -8,6 +8,7 @@ import { GithubResolver } from './resolvers/Github.resolver';
 import { githubRequest } from './services/github.service';
 
 import { authRouter } from './routes/auth.router';
+import { profileRouter } from './routes/profile.router';
 
 import { postgresConnect } from './services/db.service';
 
@@ -25,6 +26,7 @@ const main = async () => {
 
   /* routes */
   app.use('/auth', authRouter);
+  app.use('/profile', profileRouter);
 
   app.listen(3000, () => {
     console.log('server started');

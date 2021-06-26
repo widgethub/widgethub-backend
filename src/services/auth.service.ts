@@ -10,9 +10,12 @@ export const registerUser = async (username: string, password: string): Promise<
   .then(res => generateToken(res.rows[0].username))
   .catch(err => err);
 
-// export const authenticateUser = async (username: string, password: string) => postgresClient.query(
-
-// )
+export const authenticateUser = async (username: string, password: string) => postgresClient.query(
+  'SELECT * FROM Users WHERE username = $1 AND password = $2',
+  [username, password]
+)
+  .then(res => generateToken(res.rows[0].username))
+  .catch(err => err);
 
 export const generateToken = (username: string): string => {
   return jwt.sign(

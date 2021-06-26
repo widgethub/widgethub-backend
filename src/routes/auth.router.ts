@@ -2,7 +2,7 @@
 import express from 'express';
 import { body, validationResult, ValidationChain } from 'express-validator';
 
-import { registerUser } from '../services/auth.service';
+import { authenticateUser, registerUser } from '../services/auth.service';
 
 export const authRouter = express.Router();
 
@@ -27,10 +27,16 @@ authRouter.post(
 authRouter.post(
   '/login',
   authValidator(),
-  (req: express.Request, res: express.Response) => {
+  async (req: express.Request, res: express.Response) => {
       try { validationResult(req).throw; }
       catch(err) { res.status(400).json({ errors: err.array() }); }
 
       const { username, password } = req.body;
+      const token = await authenticateUser(username, password);
 
+      if (Object.keys(token).length === 0) {
+        res.status(401).json({ message: "Incorrect username or password" })
+      } else {
+        res.send({ accessToken: token });
+      }
 });
