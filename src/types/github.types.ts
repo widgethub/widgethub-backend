@@ -17,9 +17,6 @@ export class GithubUser {
   repoCount: number
 
   @Field()
-  totalContributions: number
-
-  @Field()
   pastYearContributions: number
 
 }

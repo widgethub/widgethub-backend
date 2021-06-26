@@ -5,6 +5,7 @@ import { buildSchema } from 'type-graphql';
 import express, { response } from 'express';
 
 import { GithubResolver } from './resolvers/Github.resolver';
+import { githubRequest } from './services/github.service';
 
 const main = async () => {
 
@@ -19,6 +20,7 @@ const main = async () => {
   apollo.applyMiddleware({ app });
 
   app.get('/', async (req, res) => {
+
     res.send('Home page');
   });
 
