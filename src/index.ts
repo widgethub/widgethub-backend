@@ -21,6 +21,8 @@ const main = async () => {
   const app = express();
   apollo.applyMiddleware({ app });
 
+  app.use(express.json());
+
   /* routes */
   app.use('/auth', authRouter);
 
