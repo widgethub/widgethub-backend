@@ -1,11 +1,31 @@
 
-import express from 'express';
+import 'reflect-metadata';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'type-graphql';
+import express, { response } from 'express';
 
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Home page');
-});
+import { GithubResolver } from './resolvers/Github.resolver';
 
-app.listen(3000, () => {
-  console.log('server started');
-});
+const main = async () => {
+
+  const schema = await buildSchema({
+    resolvers: [ GithubResolver ]
+  });
+
+  const apollo = new ApolloServer({ schema });
+
+  const app = express();
+
+  apollo.applyMiddleware({ app });
+
+  app.get('/', async (req, res) => {
+    res.send('Home page');
+  });
+
+  app.listen(3000, () => {
+    console.log('server started');
+  });
+
+}
+
+main();
