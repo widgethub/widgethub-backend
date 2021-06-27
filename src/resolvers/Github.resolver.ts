@@ -2,8 +2,10 @@
 import { Arg, Query, Resolver } from "type-graphql";
 import { UserInputError } from 'apollo-server-errors';
 
-import { githubRequest } from "../services/github.service";
-import { GithubUser } from '../types/github.types';
+import { githubRequest } from "../services/provider.service";
+import { GithubUser, GithubRepo } from '../types/github.types';
+
+import { inspect } from 'util';
 
 @Resolver()
 export class GithubResolver {
@@ -14,6 +16,7 @@ export class GithubResolver {
   ): Promise<GithubUser> {
 
     const githubResp = await githubRequest(username); 
+    console.log(inspect(githubResp.data.user, {depth: 6}))
     if (githubResp.hasOwnProperty('errors')) {
       throw new UserInputError('invalid github account');
     }
@@ -27,6 +30,21 @@ export class GithubResolver {
     newGithubUser.repoCount = userInfo.repositories.totalCount;
     newGithubUser.pastYearContributions =  userInfo.contributionsCollection.contributionCalendar.totalContributions;
     newGithubUser.avatarUrl = userInfo.avatarUrl;
+
+    let repoList: GithubRepo[] = []
+    for (const repo of userInfo.itemShowcase.items.edges) {
+      let newGithubRepo = new GithubRepo();
+      newGithubRepo.name = repo.node.nameWithOwner;
+      newGithubRepo.url = repo.node.url;
+      newGithubRepo.description = repo.node.description;
+      newGithubRepo.language = repo.node.primaryLanguage.name;
+      newGithubRepo.forkCount = repo.node.forkCount;
+      newGithubRepo.starCount = repo.node.starCount;
+
+      repoList.push(newGithubRepo);
+    }
+
+    newGithubUser.pinnedRepos = repoList;
 
     return newGithubUser;
   }

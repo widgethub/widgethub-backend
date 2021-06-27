@@ -2,7 +2,7 @@
 import { Arg, Query, Resolver } from 'type-graphql';
 import { JSDOM } from 'jsdom';
 
-import { twitterRequest } from '../services/twitter.service';
+import { twitterRequest } from '../services/provider.service';
 import { TwitterUser } from '../types/twitter.types';
 
 @Resolver()

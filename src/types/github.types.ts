@@ -22,4 +22,30 @@ export class GithubUser {
   @Field()
   avatarUrl: string
 
+  @Field(() => [GithubRepo])
+  pinnedRepos: GithubRepo[]
+
+}
+
+@ObjectType()
+export class GithubRepo {
+
+  @Field()
+  name: string
+
+  @Field()
+  url: string
+
+  @Field()
+  description: string
+
+  @Field()
+  language: string
+
+  @Field()
+  forkCount: number
+
+  @Field()
+  starCount: number
+
 }

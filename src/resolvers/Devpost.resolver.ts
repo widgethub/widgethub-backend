@@ -2,7 +2,7 @@
 import { Arg, Query, Resolver } from 'type-graphql';
 import { UserInputError } from 'apollo-server-errors';
 import { JSDOM } from 'jsdom';
-import { devpostRequest } from '../services/devpost.service';
+import { devpostRequest } from '../services/provider.service';
 import { DevpostUser } from  '../types/devpost.types';
 
 @Resolver()

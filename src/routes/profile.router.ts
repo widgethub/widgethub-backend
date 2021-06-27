@@ -7,6 +7,13 @@ import { Provider } from '../types/provider.types';
 
 export const profileRouter = express.Router();
 
+const providerValidator = (prefixName: string): ValidationChain[] => [
+  body(prefixName).notEmpty(),
+  body(`${prefixName}.name`).notEmpty(),
+  body(`${prefixName}.info`).notEmpty(),
+  body(`${prefixName}.provider`).notEmpty()
+]
+
 profileRouter.get(
   '/providers',
   checkAuth,
@@ -30,7 +37,7 @@ profileRouter.get(
 
 profileRouter.post(
   '/providers',
-  body('newProvider').notEmpty(),
+  providerValidator('newProvider'),
   checkAuth,
   async (req: any, res: express.Response) => {
     const valErr = validationResult(req);
@@ -46,6 +53,7 @@ profileRouter.post(
 profileRouter.patch(
   '/providers',
   body('updatedProvider').notEmpty(),
+  providerValidator('updatedProvider'),
   checkAuth,
   async (req: any, res: express.Response) => {
     const valErr = validationResult(req);
