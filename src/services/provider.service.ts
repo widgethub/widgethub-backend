@@ -38,6 +38,7 @@ export const githubRequest = (githubUsername: string) => {
                       description
                       primaryLanguage {
                         name
+                        color
                       }
                       forkCount
                       stargazerCount

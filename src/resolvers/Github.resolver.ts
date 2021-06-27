@@ -38,8 +38,9 @@ export class GithubResolver {
       newGithubRepo.url = repo.node.url;
       newGithubRepo.description = repo.node.description;
       newGithubRepo.language = repo.node.primaryLanguage.name;
+      newGithubRepo.languageColor = repo.node.primaryLanguage.color;
       newGithubRepo.forkCount = repo.node.forkCount;
-      newGithubRepo.starCount = repo.node.starCount;
+      newGithubRepo.starCount = repo.node.stargazerCount;
 
       repoList.push(newGithubRepo);
     }

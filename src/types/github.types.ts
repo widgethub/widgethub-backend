@@ -43,6 +43,9 @@ export class GithubRepo {
   language: string
 
   @Field()
+  languageColor: string
+
+  @Field()
   forkCount: number
 
   @Field()

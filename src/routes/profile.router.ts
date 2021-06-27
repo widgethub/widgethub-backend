@@ -52,7 +52,6 @@ profileRouter.post(
 
 profileRouter.patch(
   '/providers',
-  body('updatedProvider').notEmpty(),
   providerValidator('updatedProvider'),
   checkAuth,
   async (req: any, res: express.Response) => {
