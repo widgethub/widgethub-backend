@@ -2,11 +2,12 @@
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import express, { response } from 'express';
+import express  from 'express';
 import cors from 'cors';
 
 import { GithubResolver } from './resolvers/Github.resolver';
 import { DevpostResolver } from './resolvers/Devpost.resolver';
+import { TwitterResolver } from './resolvers/Twitter.resolver';
 
 import { authRouter } from './routes/auth.router';
 import { profileRouter } from './routes/profile.router';
@@ -16,7 +17,7 @@ import { postgresConnect } from './services/db.service';
 const main = async () => {
 
   const schema = await buildSchema({
-    resolvers: [ GithubResolver, DevpostResolver ]
+    resolvers: [ GithubResolver, DevpostResolver, TwitterResolver ]
   });
 
   const apollo = new ApolloServer({ schema });
@@ -37,7 +38,6 @@ const main = async () => {
   });
 
   postgresConnect();
-
 
 }
 

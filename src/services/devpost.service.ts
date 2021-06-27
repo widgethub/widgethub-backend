@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 
-
 export const DEVPOST_API_URL = "https://devpost.com/";
 
 export const devpostRequest = async (username: string) => {

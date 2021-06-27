@@ -1,9 +1,9 @@
 
 import { Arg, Query, Resolver } from 'type-graphql';
+import { UserInputError } from 'apollo-server-errors';
+import { JSDOM } from 'jsdom';
 import { devpostRequest } from '../services/devpost.service';
 import { DevpostUser } from  '../types/devpost.types';
-import { JSDOM } from 'jsdom';
-import { UserInputError } from 'apollo-server-errors';
 
 @Resolver()
 export class DevpostResolver {
@@ -18,7 +18,7 @@ export class DevpostResolver {
       throw new UserInputError('invalid devpost account');
     }
 
-    const dom = new JSDOM(devpostResp)
+    const dom = new JSDOM(devpostResp);
 
     /* get devpost stats */
     const statsDom = dom.window.document.querySelector('#portfolio-navigation').querySelectorAll('span');
