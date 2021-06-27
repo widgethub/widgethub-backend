@@ -17,6 +17,7 @@ export const githubRequest = (githubUsername: string) => {
         {
           user(login: "${githubUsername}") {
             login
+            avatarUrl
             followers {
               totalCount
             }
@@ -42,8 +43,6 @@ export const githubRequest = (githubUsername: string) => {
   }
 
   return axios.post(GITHUB_API_URL, query, config)
-    .then(response => {
-      return response.data
-    })
-    .catch(err => console.error(err))
+    .then(res => res.data)
+    .catch(err => err)
 }

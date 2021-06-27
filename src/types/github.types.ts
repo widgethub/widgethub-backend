@@ -1,11 +1,11 @@
 
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class GithubUser {
 
   @Field()
-  username: String
+  username: string
 
   @Field()
   followers: number
@@ -18,5 +18,8 @@ export class GithubUser {
 
   @Field()
   pastYearContributions: number
+
+  @Field()
+  avatarUrl: string
 
 }

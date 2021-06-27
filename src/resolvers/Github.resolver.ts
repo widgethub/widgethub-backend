@@ -1,22 +1,24 @@
 
 import { Arg, Query, Resolver } from "type-graphql";
+import { UserInputError } from 'apollo-server-errors';
+
 import { githubRequest } from "../services/github.service";
 import { GithubUser } from '../types/github.types';
-import { inspect } from 'util';
 
 @Resolver()
 export class GithubResolver {
 
   @Query(() => GithubUser)
-  async getUser(
+  async getGithubUser(
     @Arg('username') username: string
   ): Promise<GithubUser> {
 
     const githubResp = await githubRequest(username); 
-    // console.log(githubResp)
-    const userInfo = githubResp.data.user;
+    if (githubResp.hasOwnProperty('errors')) {
+      throw new UserInputError('invalid github account');
+    }
 
-    console.log(inspect(userInfo, { depth: null }));
+    const userInfo = githubResp.data.user;
 
     let newGithubUser = new GithubUser();
     newGithubUser.username = userInfo.login;
@@ -24,6 +26,7 @@ export class GithubResolver {
     newGithubUser.following = userInfo.following.totalCount;
     newGithubUser.repoCount = userInfo.repositories.totalCount;
     newGithubUser.pastYearContributions =  userInfo.contributionsCollection.contributionCalendar.totalContributions;
+    newGithubUser.avatarUrl = userInfo.avatarUrl;
 
     return newGithubUser;
   }
